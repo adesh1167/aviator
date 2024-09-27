@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <meta name="theme-color" content="#500000"/>
+
+    <!-- Meta Tags -->
+    <meta name="description" content="Get Accurate Analyzed Predictions">
+    <meta name="keywords" content="predictions, analytics, games, accurate predictions, digital games">
+    <meta name="author" content="Aviator Tool">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Aviator Tool">
+    <meta property="og:description" content="Get Accurate Analyzed Predictions">
+    <meta property="og:image" content="https://dag1.vercel.app/aviator/assets/logo.png">
+    <meta property="og:url" content="https://dag1.vercel.app/avaitor">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Aviator Tool">
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Aviator Tool">
+    <meta name="twitter:description" content="Get Accurate Analyzed Predictions">
+    <meta name="twitter:image" content="https://https://dag1.vercel.app/aviator/assets/logo.png">
+    <meta name="twitter:site" content="@yourtwitterhandle">
+
+    <style>
+
+        *{
+            box-sizing: border-box;
+        }
+
+        html{
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            background-color: #a00;
+        }
+
+        body{
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            font-family: sans-serif;
+            /* background: radial-gradient(#fff, #58a); */
+            background-color: #000;
+            border: 5px #a00 solid;
+            border-radius: 20px;
+            position: relative;
+            z-index: -10;
+
+        }
+
+        .blank{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0008, #000f);
+            z-index: -1;
+        }
+
+        header{
+            padding: 80px 20px 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            flex-direction: column;
+            color: #a00;
+        }
+
+        header img{
+            width: 300px;
+            max-width: 70%;
+        }
+
+        header h1{
+            font-weight: 700;
+            font-size: 35px;
+            margin: 0;
+            padding: 0;
+        }
+
+        header p{
+            color: #999;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .image{
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            /* border: 1px red solid; */
+        }
+        
+        .image img{
+            width: 80%;
+            position: relative;
+            z-index: -5;
+            position: absolute;
+            max-width: 700px;
+            margin-bottom: 15vw;
+        }
+
+        .start{
+            align-self: flex-end;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #message{
+            color: #d00;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .start input{
+            border: 2px #a00 solid;
+            border-radius: 10px;
+            font-size: 20px;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        
+        .start input:focus{
+            outline: none;
+            box-shadow: 0 0 5px 0 #0008;
+        }
+
+        .button-section{
+            margin-top: 10px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .start button{
+            border: none;
+            font-size: 20px;
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: #a00;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .loading{
+            width: 30px;
+            height: 50px;
+            border: 20px #ddd solid;
+            border-color: #a00 transparent #a00 transparent;
+            border-radius: 20px;
+            animation: load 2s linear infinite ;
+        }
+
+        .none{
+            display: none;
+        }
+
+        @keyframes load {
+            0% {
+                transform: rotateZ(0deg) scale(0.7);
+            }
+            40% {
+                transform: rotateZ(540deg) scale(1);
+            }
+            100% {
+                transform: rotate(540deg) scale(0.7);
+            }
+            
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blank"></div>
+    <header>
+        <h1>Aviator Tool</h1>
+        <p>Get The Multiplier For The Next Round</p>
+    </header>
+    
+    <section class="image">
+        <img src="assets/logo.png" alt="Aviator Tool Logo" class="logo">
+        <div class="start">
+            <span id="message"></span>
+            <input placeholder="Access Code" id="input"/>
+            <div class="button-section">
+                <button id="start" onclick="doAuthentication()">Start</button>
+                <div id="loading" class="loading none"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const message = document.getElementById('message');
+        const input = document.getElementById('input');
+        const start = document.getElementById('start');
+        const loading = document.getElementById('loading');
+
+        const doAuthentication = async ()=>{
+            loading.classList.remove('none');
+            start.classList.add('none');
+            fetch(`https://tickets.42web.io/gst/handlers/checkAccess.php?code=${input.value}`, {
+            })
+                .then(result=>{
+                    const data = result.json();
+                    if(data.status === "valid"){
+                        message.innerHTML = data.message;
+                    } else{
+                        message.innerHTML = data.error
+                    }
+
+                })
+                .catch(error=>{
+                    message.innerHTML = 'Network error. Try again';
+                })
+                .finally(()=>{
+                    loading.classList.add('none');
+                    start.classList.remove('none');
+                })
+        }
+    </script>
+
+</body>
+
+</html>
