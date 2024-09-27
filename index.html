@@ -5,10 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aviator Tool</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="icon" href="assets/logo.png" type="image/png">
-    <meta name="theme-color" content="#500000"/>
+    <meta name="theme-color" content="#000000"/>
 
     <!-- Meta Tags -->
     <meta name="description" content="Get Accurate Analyzed Predictions">
@@ -41,7 +39,7 @@
             height: 100%;
             overflow-x: hidden;
             overflow-y: hidden;
-            background-color: #a00;
+            /* background-color: #a00; */
         }
 
         body{
@@ -55,7 +53,7 @@
             font-family: sans-serif;
             /* background: radial-gradient(#fff, #58a); */
             background-color: #000;
-            border: 5px #a00 solid;
+            /* border: 5px #a00 solid; */
             border-radius: 20px;
             position: relative;
             z-index: -10;
@@ -224,24 +222,29 @@
         const doAuthentication = async ()=>{
             loading.classList.remove('none');
             start.classList.add('none');
-            fetch(`https://tickets.42web.io/gst/handlers/checkAccess.php?code=${input.value}`, {
-            })
-                .then(result=>{
-                    const data = result.json();
-                    if(data.status === "valid"){
-                        message.innerHTML = data.message;
-                    } else{
-                        message.innerHTML = data.error
-                    }
-
+            try {     
+                fetch(`https://tickets.42web.io/gst/handlers/checkAccess.php?code=${input.value}`, {
                 })
-                .catch(error=>{
-                    message.innerHTML = 'Network error. Try again';
-                })
-                .finally(()=>{
-                    loading.classList.add('none');
-                    start.classList.remove('none');
-                })
+                    .then(result=>{
+                        const data = result.json();
+                        if(data.status === "valid"){
+                            message.innerHTML = data.message;
+                        } else{
+                            message.innerHTML = data.error
+                        }
+    
+                    })
+                    .catch(error=>{
+                        message.innerHTML = 'Invalid Access Code';
+                        // console.log(error)
+                    })
+                    .finally(()=>{
+                        loading.classList.add('none');
+                        start.classList.remove('none');
+                    })
+            } catch (error) {
+                // console.log(error)
+            }
         }
     </script>
 
