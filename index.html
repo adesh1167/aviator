@@ -224,10 +224,11 @@
             loading.classList.remove('none');
             start.classList.add('none');
             try {     
-                fetch(`https://tickets.42web.io/gst/handlers/checkAccess.php?code=${input.value}`, {
+                fetch(`https://gst-320781260c56.herokuapp.com/aviator/check-access-code.php?access-code=${input.value}`, {
                 })
-                    .then(result=>{
-                        const data = result.json();
+                    .then(async result=>{
+                        const data = await result.json();
+                        console.log(data);
                         if(data.status === "valid"){
                             message.innerHTML = data.message;
                         } else{
@@ -236,10 +237,11 @@
     
                     })
                     .catch(error=>{
-                        message.innerHTML = 'Invalid Access Code';
+                        message.innerHTML = 'Network Error. Try Again';
                         // console.log(error)
                     })
-                    .finally(()=>{
+                    .finally((result)=>{
+                        console.log(result)
                         loading.classList.add('none');
                         start.classList.remove('none');
                     })
