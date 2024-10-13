@@ -40,11 +40,11 @@ window.addEventListener("resize", ()=>{
 })
 
 const planeImage1 = new Image();
-planeImage1.src = 'assets/plane1.svg';
+planeImage1.src = 'game/assets/plane1.svg';
 const planeImage2 = new Image();
-planeImage2.src = 'assets/plane2.svg';
+planeImage2.src = 'game/assets/plane2.svg';
 const planeImage3 = new Image();
-planeImage3.src = 'assets/plane3.svg';
+planeImage3.src = 'game/assets/plane3.svg';
 
 const planeImages = [
     planeImage1,
