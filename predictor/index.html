@@ -70,7 +70,8 @@
                     if(firstLoad){
                         index = liveMutipliers.length - 4;
                         firstLoad = false;
-                        multiplierElem.innerHTML = liveMutipliers[index];
+                        const content = liveMutipliers[index].toFixed(1);
+                        multiplierElem.innerHTML = content > 4 ? ">2" : content;
                         startSequence();
                     }
                     console.log("Live Multipliers: ", liveMutipliers);
