@@ -1,0 +1,130 @@
+*{
+    box-sizing: border-box;
+}
+
+html{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #000;
+}
+
+.header{
+    padding: 20px;
+}
+
+.stop{
+    background-color: #900;
+    border-radius: 10px;
+    padding: 12px 20px;
+    color: #ccc;
+    font-size: 20px;
+    font-weight: 600;
+    align-self: center;
+    border: 2px #999 solid;
+}
+
+.main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #000; */
+    padding: 20px;
+    color: #ccc;
+    flex: 1;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.odd{
+    /* background-color: #333; */
+    height: 200px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 140px;
+    color: #ccc;
+    /* text-shadow: 0 0 5px yellow; */
+    font-weight: 600;
+    /* border: 1px #fff solid; */
+}
+
+.bar{
+    width: 80%;
+    height: 0px;
+    border-radius: 2px;
+    /* background-color: #000; */
+    /* margin-top: 20px; */
+    padding: 5px 0;
+    border-bottom: 3px #600 solid;
+    /* box-shadow: 0 0 5px 0px #999; */
+    max-width: 400px;
+}
+
+.bar-fill{
+    height: 12px;
+    width: 100%;
+    background-color: #c00;
+    border-radius: 4px;
+    transition: 0.2s all linear;
+}
+
+.date-time{
+    font-size: 20px;
+    color: #ccc;
+    padding: 40px 20px;
+    display: flex;
+    gap: 16px;
+    font-weight: 600;
+}
+
+.instructions{
+
+}
+
+.instruction{
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.loading{
+    width: 70px;
+    height: 140px;
+    border: 60px #ddd solid;
+    border-color: #ccc #000 #ccc #000;
+    border-radius: 20px;
+    animation: load 2s linear infinite ;
+}
+
+@keyframes load {
+    0% {
+        transform: rotateZ(0deg) scale(0.7);
+    }
+    40% {
+        transform: rotateZ(540deg) scale(1);
+    }
+    100% {
+        transform: rotate(540deg) scale(0.7);
+    }
+    
+}
