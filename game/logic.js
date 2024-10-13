@@ -68,7 +68,7 @@ const blocks = {
     },
     2: {
         staked : false,
-        wagerValue: 10,
+        wagerValue: 0.1,
         input: input2,
         wager: wager2,
         controlsBlock: controlsBlock2,
