@@ -162,6 +162,7 @@ const syncWager = (block, value) => {
 } 
 
 setWager(1, blocks[1].wagerValue);
+setWager(2, blocks[2].wagerValue);
 
 const increaseWager = (block) => {
     blocks[block].input.value = formatNumber(parseNumber(blocks[block].input.value) + 30);
