@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+    </head>
+    <body>
+        <style>
+            canvas{
+                border: 2px black solid;
+                /* border-radius: 20px; */
+                width: 80%;
+                display: block;
+                /* aspect-ratio: 3/1; */
+            }
+        </style>
+        <canvas id="aviatorCanvas" width="800" height="600"></canvas>
+        <button onclick="flyAway()">Stop and Exit</button>
+
+        <script>
+            const canvas = document.getElementById('aviatorCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = window.innerWidth;
+            const height = width / 1.7; // Ensure 3:1 aspect ratio
+
+            const planeImage = new Image();
+            planeImage.src = 'plane.png';
+            planeImage.width = '20';
+            
+            // Set the internal resolution of the canvas
+            canvas.width = width;
+            canvas.height = height;
+
+            const rest = 400;
+
+            const padding = 40;
+
+            // Movement points
+            let points = {
+                A: {name: 'A', x: 0 + padding, y: canvas.height - padding, rest: 0}, // Point A (bottom-left)
+                // A: {name: 'A', x: canvas.width * 0.2, y: canvas.height *0.8, rest: 0}, // Point A (bottom-left)
+                // B: {name: 'B', x: canvas.width * 0.55, y: canvas.height * 0.8, rest: 0}, // Point B (50%, 20%)
+                // B: {name: 'B', x: canvas.width * 0.5, y: canvas.height * 0.2, rest: rest, curve: true}, // Point B (50%, 20%)
+                B: {name: 'B', x: canvas.width * 0.6, y: canvas.height * 0.2, rest: 0, curve: true}, // Point B (50%, 20%)
+                C: {name: 'C', x: canvas.width * 0.6, y: canvas.height * 0.2, rest: 200}, // Point B (50%, 20%)
+                D: {name: 'D', x: canvas.width * 0.7, y: canvas.height * 0.6, rest: 200}, // Point C (70%, 50%)
+                EXIT: {name: 'EXIT', x: canvas.width, y: 0} // Point D (100%, top-right)
+            };
+
+            // Plane properties
+            const plane1 = {
+                x: 0, // Start at point A
+                y: canvas.height, // Bottom left at point A
+                targetX: canvas.width * 0.5, // Point B X (50%)
+                targetY: canvas.height * 0.2, // Point B Y (20%)
+                target: points.B,
+                lastTarget: points.A,
+                t: 0,
+                speed: 1.4, // Initial speed
+                curveSpeed: 0.005,
+                state: 'toB', // Current state
+                resting: false, // To track rest
+                arrived: false,
+            };
+
+            let loopInterval;
+            let timeOut;
+
+            let lastDistance = 9999;
+
+            const controlPoint = {
+                x: (points.A.x + points.B.x) * 0.7,                 // Midpoint of A and B on x-axis
+                y: points.A.y + 0                               // Control point lifted above for slack
+            };
+
+            function easeOut(t) {
+                // return 1 - Math.pow(1 - t, 3); // Cubic ease-out function
+                return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            }
+
+            function customBezier(t, min = 0.1, max = 2) {
+                // Control points: (0, 0), (0.5, 2), (1, 0)
+                const p0 = min;   // Start point
+                const p1 = max;   // Control point (peak at t=0.5)
+                const p2 = min;   // End point
+
+                // Quadratic Bezier formula
+                return (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
+            }
+
+            function cubicBezier(t, P0, P1, P2, P3) {
+                const u = 1 - t;
+                return u**3 * P0 + 3 * u**2 * t * P1 + 3 * u * t**2 * P2 + t**3 * P3;
+            }
+
+            // Example usage
+            function cubicCurve(t) {
+                const P0 = 0;   // Start at 0
+                const P1 = 0.5; // Control point 1 (customizable)
+                const P2 = 0.5; // Control point 2 (customizable)
+                const P3 = 1;   // End at 1
+                const bezierValue = cubicBezier(t, P0, P1, P2, P3);
+
+                const outputMin = 0.1;
+                const outputMax = 0.9;
+                return outputMin + bezierValue * (outputMax - outputMin);
+            }
+
+            function delay(ms){
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            function movePlane() {
+
+                if(plane.target.name === "B" && plane.lastTarget.name === "A"){
+                    // console.log(plane.t)
+                    if (plane.t <= 1) {
+                        const t = easeOut(plane.t);
+                        // Parametric quadratic bezier formula
+                        plane.x = (1 - t) * (1 - t) * plane.lastTarget.x + 2 * (1 - t) * t * controlPoint.x + t * t * plane.target.x;
+                        plane.y = (1 - t) * (1 - t) * plane.lastTarget.y + 2 * (1 - t) * t * controlPoint.y + t * t * plane.target.y;
+                        plane.t += plane.curveSpeed;  // Increment t to move the plane
+                    } else{
+                        nextPoint();
+                    }
+                } else{
+                    // if (!plane.resting) {
+                    //     // Calculate distance to target
+                    //     const dx = plane.target.x - plane.x;
+                    //     const dy = plane.target.y - plane.y;
+                    //     const distance = Math.sqrt(dx * dx + dy * dy);
+                    //     console.log(plane.t, distance);
+                    //     // if (lastDistance > distance) {
+                    //     if(plane.t < 1){
+
+                            
+                    //         const t = easeOut(plane.t)
+                    //         lastDistance = distance
+                    //         // Move towards the target
+                            
+                    //         // plane.x += dx * (plane.speed / distance);
+                    //         // plane.y += dy * (plane.speed / distance);
+                            
+                    //         plane.x = plane.lastTarget.x + (plane.target.x - plane.lastTarget.x) * t;
+                    //         plane.y = plane.lastTarget.y + (plane.target.y - plane.lastTarget.y) * t;
+                            
+                    //         plane.t += plane.speed;
+                    //     }
+                    if (!plane.resting) {
+                        // Calculate distance to target
+                        const dx = plane.target.x - plane.x;
+                        const dy = plane.target.y - plane.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        const totalDx = plane.lastTarget.x - plane.target.x;
+                        const totalDy = plane.lastTarget.y - plane.target.y;
+                        const totalDistance = Math.sqrt(totalDx * totalDx + totalDy * totalDy);
+
+                        distanceRatio = distance/totalDistance;
+                        
+                        // console.log(plane.t, distance);
+                        // if (lastDistance > distance) {
+                        if(totalDistance > distance){
+
+                            const factor = customBezier(distanceRatio);
+
+                            console.log(lastDistance, distance, factor)
+                            
+                            lastDistance = distance
+                            
+                            // plane.x += dx * (plane.speed / distance );
+                            // plane.y += dy * (plane.speed / distance );
+                            plane.x += plane.speed * factor * totalDx/totalDistance || 0;
+                            plane.y += plane.speed * factor * totalDy/totalDistance || 0;
+                            
+                            // console.log(plane.speed * totalDx/totalDistance, plane.speed * totalDy/totalDistance, distance)
+                            // console.log(distanceRatio, factor, distance * factor);
+                        }
+                        else {
+                            // If reached the target, rest
+                            console.log('Next Point: ', lastDistance, distance)
+                            lastDistance = 9999;
+                            plane.arrived = true;
+                            // if(plane)
+                            nextPoint();
+                        }
+    
+                        if(plane.state === 'exit'){
+                            if(plane.arrived == true){
+                                console.log(plane.arrived);
+                                clearInterval(loopInterval);
+                                console.log(plane.arrived);
+                            }
+                        }
+                    }
+                }
+
+                // console.log('Here', plane.resting);
+
+                draw();
+            }
+
+            
+
+            function nextPoint() {
+                plane.t = 0;
+                plane.resting = true;
+
+                const currentPoint = plane.lastTarget = plane.target;
+
+                if(plane.target.name === "B"){
+                    plane.target = points['C'];
+                } else if(plane.target.name === "C"){
+                    plane.target = points['D'];
+                } else if(plane.target.name === "D"){
+                    plane.target = points['C'];
+                } else if(plane.target.name === "EXIT"){
+                    plane.target = points['EXIT'];
+                }
+                timeOut = setTimeout(() => {
+                    plane.resting = false;
+
+                    // // Move between points B and C
+                    // if (plane.state === 'toB') {
+                    //     plane.targetX = points.C.x;
+                    //     plane.targetY = points.C.y;
+                    //     plane.state = 'toC';
+                    // } else if (plane.state === 'toC') {
+                    //     plane.targetX = points.B.x;
+                    //     plane.targetY = points.B.y;
+                    //     plane.state = 'toB';
+                    // } else if (plane.state === 'exit') {
+                    //     // Exit the screen via point D
+                    //     plane.targetX = points.D.x;
+                    //     plane.targetY = points.D.y;
+                    //     // clearInterval(loopInterval);
+                    // }
+                }, currentPoint.rest || 0); // Rest for 2 seconds
+            }
+
+            function draw() {
+                // Clear the canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw the plane as a red circle (for simplicity)
+                // ctx.fillStyle = 'red';
+                // ctx.beginPath();
+                // ctx.arc(plane.x, plane.y, 10, 0, Math.PI * 2); // Plane as a simple circle
+                // ctx.fill();
+
+                ctx.drawImage(planeImage, plane.x - 25, plane.y - 210 / 2, 160, 160);
+
+                // Draw the trail (simple line between points)  
+
+                drawSlackRope();
+            }
+
+            function drawSlackRope() {
+
+                ctx.beginPath();
+                
+                // Move to point A (the fixed end of the rope)
+                ctx.moveTo(points.A.x , points.A.y );
+                
+                // Calculate the control point for the curve to simulate the sag
+                const controlPointX = (plane.x + points.A.x) * 0.55;
+                const controlPointY = Math.max(plane.y, points.A.y) + 0; // Sagging effect
+
+                // Draw the quadratic Bézier curve between point A and the plane's current position
+                ctx.quadraticCurveTo(controlPointX, controlPointY, plane.x, plane.y);
+
+                ctx.lineTo(plane.x , canvas.height - padding);
+                ctx.lineTo(points.A.x, canvas.height -padding);
+                ctx.closePath(); // Close the path to create a filled shape
+
+                ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'; // Blue color with some transparency
+                ctx.fill(); // Fill the area under the curve
+
+                ctx.beginPath();
+
+                ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+                ctx.lineWidth = 5;
+
+                ctx.moveTo(points.A.x , points.A.y );
+
+                // Draw the quadratic Bézier curve between point A and the plane's current position
+                ctx.quadraticCurveTo(controlPointX, controlPointY, plane.x, plane.y);
+
+                ctx.stroke();
+
+
+            }
+
+            // Start the loop (move the plane)
+            // loopInterval = setInterval(movePlane, 16); // Run at ~60FPS
+
+            // Function to stop the loop and exit the screen
+            function stopAndExit() {
+                // plane.speed = 25;
+                plane.arrived = false;
+                plane.lastTarget = {x: plane.x, y: plane.y};
+                // plane.state = 'exit';
+                // plane.lastTarget = plane.target;
+                plane.target = points.C;
+                plane.resting = false;
+                lastDistance = 9999;
+            }
+
+            const updateFrame = () => {
+                draw();
+            }
+
+            const animate = setInterval(updateFrame, 16);
+
+            points = {
+                A: {
+                    name: 'A',
+                    x: 0 + padding,
+                    y: canvas.height - padding,
+                    rest: 0
+                }, 
+                B: {
+                    name: 'B',
+                    x: canvas.width * 0.6,
+                    y: canvas.height * 0.2,
+                    // rest: 0,
+                    // curve: true,
+                },
+                C: {
+                    name: 'C',
+                    x: canvas.width * 0.6,
+                    y: canvas.height * 0.2,
+                    rest: 300,
+                    timingFunction: {min: 0.1, max: 1.5},
+                },
+                D: {
+                    name: 'D',
+                    x: canvas.width * 0.7,
+                    y: canvas.height * 0.6,
+                    rest: 300,
+                    timingFunction: {min: 0.1, max: 1.5},
+                },
+                EXIT: {
+                    name: 'EXIT',
+                    x: canvas.width -30,
+                    y: 0
+                } // Point D (100%, top-right)
+            }
+
+            const plane = {
+                x: 0 + padding,
+                y: canvas.height - padding,
+                lastTarget: points.A,
+                target: points.B,
+                speed: 16,
+                steps: 2,
+                curverSpeed: 0.005,
+                t: 0,
+            }
+
+            let interval
+
+            const moveToNewPoint = async () => {
+                const totalDx = plane.target.x - plane.lastTarget.x;
+                const totalDy = plane.target.y - plane.lastTarget.y;
+
+                const totalDistance= Math.sqrt(totalDx * totalDx + totalDy * totalDy);
+
+                // const step = totalDistance/plane.steps
+                
+                console.log(plane.lastTarget, plane.target, totalDistance, plane.x, plane.y);
+
+                let linearDistanceCovered = 0;
+
+                if(plane.target.rest){
+                    await delay(plane.target.rest);
+                }
+
+                interval = setInterval(() => {
+
+                    const dx = plane.lastTarget.x - plane.x;
+                    const dy = plane.lastTarget.y - plane.y;
+
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    const distanceRatio = distance/totalDistance;
+
+                    const factor = customBezier(distanceRatio, plane.target.timingFunction?.min, plane.target.timingFunction?.max);
+
+                    const curveFactorX = cubicCurve(1 - distanceRatio);
+                    const curveFactorY = cubicCurve(distanceRatio);
+
+                    console.log(distanceRatio, factor, linearDistanceCovered/totalDistance);
+
+                    if(distance >= totalDistance){
+                        clearInterval(interval);
+                        if(!plane.gone){
+                            setNextPoint();
+                        }
+                        console.log({x: plane.x, y: plane.y })
+
+                        return;
+
+                    }
+
+                    const changeX = (totalDx/totalDistance || 0) * (1/factor) * plane.steps //* (curveFactorX);
+                    const changeY = (totalDy/totalDistance || 0) * (factor) * plane.steps //* (curveFactorY);
+                    plane.x += changeX;
+                    plane.y += changeY;
+
+                    linearDistanceCovered += plane.steps;
+                    // console.log()
+                }, plane.speed)
+
+
+            }
+
+            const setNextPoint = (target) => {
+
+                plane.lastTarget = {x: plane.x, y: plane.y};
+                console.log('At Set point: ', plane.lastTarget)
+                // plane.lastTarget = plane.target;
+                
+                if(target){
+                    plane.target = target;
+                } else{
+                    if(plane.target.name === "A"){
+                        plane.target = points.B
+                    }
+                    if(plane.target.name === "B"){
+                        plane.target = points.C
+                    } else if(plane.target.name === "C"){
+                        plane.target = points.D
+                    } else if(plane.target.name === "D"){
+                        plane.target = points.C
+                    }
+                }
+
+                moveToNewPoint();
+            }
+
+            moveToNewPoint();
+
+            function flyAway(){
+                clearInterval(interval);
+                plane.steps = 50;
+                plane.gone = true;
+                setNextPoint(points.EXIT);
+            }
+
+        </script>
+
+    </body>
+</html>

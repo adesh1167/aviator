@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <link rel="stylesheet" href="browser.css?51623"/>
+        <link rel="stylesheet" href="style.css?65112"/>
+        <link rel="stylesheet" href="toast.css"/>
+        <meta name="theme-color" content="#dd1a27"/>
+    </head>
+    <body>
+        <div class="browser">
+            <div class="address-bar">
+                <img class="browser-secured" src="assets/secured.png"/>
+                <span class="url" type="text">
+                  <div class="url-wrapper">
+                    <span>https://www.sportybet.com</span><span class="sub-url">/gh/m/games/sportygames?game=turbo-games/aviator</span>
+                  </div>
+                </span>
+            </div>
+            <div class="browser-buttons">
+                <div class=" browser-button browser-tabs">
+                  <div class="browser-tabs-wrapper">
+                    <div class="browser-tabs-decoy">17</div>
+                    <input class="browser-tabs-box" type="number" value="17"/>
+                  </div>
+                </div>
+                <div class="browser-button browser-options" onClick="openFullscreen(document.documentElement)">
+                    <img class="browser-menu" src="assets/menu.png"/>
+                </div>
+            </div>
+            <div class="browser-loading-bar">
+              <div class="browser-loading-fill"></div>
+            </div>
+        </div>
+
+        <div class="main">
+            <!-- TOAST -->
+
+            <div class="toast-container" id="toastContainer">
+                <div id="toast" _ngcontent-bgv-c145="" class="alert-win ng-tns-c145-8 celebrated ng-trigger ng-trigger-messageState ng-star-inserted" >
+                    <div _ngcontent-bgv-c145="" class="toast-multiplier ng-tns-c145-8">
+                        <div _ngcontent-bgv-c145="" class="label ng-tns-c145-8 ng-star-inserted" style=""> You have cashed out!
+                        </div>
+                        <div id="toastMultiplier" _ngcontent-bgv-c145="" class="value ng-tns-c145-8 ng-star-inserted" style=""> 3.86x </div>
+                        <!----><!----><!---->
+                    </div>
+                    <div _ngcontent-bgv-c145="" class="win ng-tns-c145-8 celebrated">
+                        <div _ngcontent-bgv-c145="" class="label no-wrap ng-tns-c145-8">
+                            <span _ngcontent-bgv-c145="" class="ng-tns-c145-8">Win</span><span _ngcontent-bgv-c145="" class="currency ng-tns-c145-8">
+                                GHS
+                            </span>
+                        </div>
+                        <div _ngcontent-bgv-c145="" class="value ng-tns-c145-8">
+                            <span _ngcontent-bgv-c145="" class="ng-tns-c145-8" id="toastAmount">38,600.00</span>
+                        </div>
+                    </div>
+                    <button _ngcontent-bgv-c145="" type="button" class="close ng-tns-c145-8">
+                        <span _ngcontent-bgv-c145="" class="ng-tns-c145-8">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="header">
+                <div class="nav-back"  id="startButton" onclick="generalStart(); this.onclick = null">
+                    <svg data-v-213837a2="" viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img" aria-label="chevron left" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-chevron-left ml-2 b-icon bi" style="font-size: 125%;"><g data-v-213837a2=""><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path></g></svg>
+                </div>
+                <div class="main-header">
+                    <div class="main-header-left">
+                        <div class="header-title"></div>
+                        <img class="header-info" src="assets/question.svg">
+                    </div>
+                    <div class="main-header-right">
+                        <div class="balance">
+                            <span class="balance-value" id="balance">0.00</span>
+                            <span class="balance-currency">GHS</span>
+                        </div>
+                        <div class="menu" onclick="hardReset()">
+                            <img src="assets/menu.svg">
+                        </div>
+                        <div class="chat">
+                            <img src="assets/chat.svg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="multiplier-histories">
+                    <div class="multiplier-histories-wrapper no-scroll-bar" id="multiplierHistories">
+                        <span class="multiplier-history">1.28x</span>
+                        <span class="multiplier-history">2.70x</span>
+                        <span class="multiplier-history">1.18x</span>
+                        <span class="multiplier-history">1.45x</span>
+                        <span class="multiplier-history">8.60x</span>
+                        <span class="multiplier-history">1.28x</span>
+                        <span class="multiplier-history">2.70x</span>
+                        <span class="multiplier-history">1.18x</span>
+                        <span class="multiplier-history">1.45x</span>
+                        <span class="multiplier-history">8.60x</span>
+                    </div>
+                    <div class="expand-multiplier-histories">
+                        <div class="expand-multiplier-histories-wrapper">
+                            <img class="history-logo" src="assets/history.svg">
+                            <img class="carret-down" src="assets/arrow-down.svg">
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <div id="wheel" class="wheel spin">
+                        <div class="slice"></div>
+                    </div>
+                    <div class="pillars" id="pillars">
+                        <div class="vertical-pillar vertical-ripples" id="verticalPiller">
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                            <div class="vertical-dot-container">
+                                <div class="vertical-dot"></div>
+                            </div>
+                        </div>
+                        <div class="horizontal-pillar horizontal-ripples" id="horizontalPiller">
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                            <div class="horizontal-dot-container">
+                                <div class="horizontal-dot"></div>
+                            </div>
+                        </div>
+                        <div class="pillar-fill"></div>
+                    </div>
+                    <canvas id="aviatorCanvas" width="800" height="600"></canvas>
+                    <div class="glow" id="glow"></div>
+                    <div class="multiplier-wrapper">
+                        <div class="multiplier" id="multiplierContainer">
+                            <div class="flew-away" id="flewAwayText">FLEW AWAY!</div>
+                            <div class="multiplier-value" id="multiplier">4.21x</div>
+                        </div>
+                        <div class="next-round-loading" id="nextRoundLoading">
+                            <img src="assets/blade.svg" class="spin2"/>
+                            <div class="next-round-loading-text">WAITING FOR NEXT ROUND</div>
+                            <div class="next-round-loading-bar">
+                                <div class="next-round-loading-bar-fill"  id="nextRoundLoadingBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-section" id="controls">
+                    <div class="controls-block"  id="controlsBlock1">
+                        <div class="control-type-block">
+                            <div class="control-type active">Bet</div>
+                            <div class="control-type">Auto</div>
+                        </div>
+                        <div class="buttons-block" id="buttonsBlock1">
+                            <div class="input-block">
+                                <div class="input-wrapper">
+                                    <button class="minus-button" onclick="decreaseWager(1)">
+                                        <img src="assets/minus.svg">
+                                    </button>
+                                    <input class="wager-input" value="10.00" id="wagerInput1"/>
+                                    <button class="plus-button" onclick="increaseWager(1)">
+                                        <img src="assets/plus.svg">
+                                    </button>
+                                </div>
+                                <div class="wager-presets">
+                                    <button class="wager-preset" onclick="setWager(1, 100)">
+                                        <span>100.00</span>
+                                    </button>
+                                    <button class="wager-preset" onclick="setWager(1, 200)">
+                                        <span>200.00</span>
+                                    </button>
+                                    <button class="wager-preset" onclick="setWager(1, 500)">
+                                        <span>500.00</span>
+                                    </button>
+                                    <button class="wager-preset" onclick="setWager(1, 1000)">
+                                        <span>1,000.00</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="control-button-wrapper" id="controlButtons1">
+                                <div class="waiting" id="waitingLabel1">Waiting for next round</div>
+                                <div class="control-buttons">
+                                    <button class="control-button cancel" id="cancelButton1" onclick="doCancel(1)">Cancel</button>
+                                    <button class="control-button" id="wagerButton1" onclick="placeWager(1)">
+                                        <label class="bet-label">BET</label>
+                                        <label class="wager-amount">
+                                            <span id="wagerValue1">10.00</span>
+                                            <span class="wager-currency">GHS</span>
+                                        </label>
+                                    </button>
+                                    <button class="control-button cashout" id="cashoutButton1" onclick="doCashout(1)">
+                                        <label class="bet-label">CASH OUT</label>
+                                        <label class="wager-amount">
+                                            <span id="cashoutElem1">10.00</span>
+                                            <span class="wager-currency">GHS</span>
+                                        </label>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls-block" id="controlsBlock2">
+                        <div class="control-type-block">
+                            <div class="control-type active">Bet</div>
+                            <div class="control-type">Auto</div>
+                        </div>
+                        <div class="buttons-block" id="buttonsBlock2">
+                            <div class="input-block">
+                                <div class="input-wrapper">
+                                    <button class="minus-button" onclick="decreaseWager(2)">
+                                        <img src="assets/minus.svg">
+                                    </button>
+                                    <input class="wager-input" value="10.00" id="wagerInput2"/>
+                                    <button class="plus-button" onclick="increaseWager(2)">
+                                        <img src="assets/plus.svg">
+                                    </button>
+                                </div>
+                                <div class="wager-presets">
+                                    <button class="wager-preset" onclick="setWager(2, 100)">
+                                        <span>100.00</span>
+                                    </button>
+                                    <button class="wager-preset" onclick="setWager(2, 200)">
+                                        <span>200.00</span>
+                                    </button>
+                                    <button class="wager-preset" onclick="setWager(2, 500)">
+                                        <span>500.00</span>
+                                    </button>
+                                    <button class="wager-preset" onclick="setWager(2, 1000)">
+                                        <span>1,000.00</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="control-button-wrapper" id="controlButtons2">
+                                <div class="waiting" id="waitingLabel2">Waiting for next round</div>
+                                <div class="control-buttons">
+                                    <button class="control-button cancel" id="cancelButton2" onclick="doCancel(2)">Cancel</button>
+                                    <button class="control-button" id="wagerButton2" onclick="placeWager(2)">
+                                        <label class="bet-label">BET</label>
+                                        <label class="wager-amount">
+                                            <span id="wagerValue2">10.00</span>
+                                            <span class="wager-currency">GHS</span>
+                                        </label>
+                                    </button>
+                                    <button class="control-button cashout" id="cashoutButton2" onclick="doCashout(2)">
+                                        <label class="bet-label">CASH OUT</label>
+                                        <label class="wager-amount">
+                                            <span id="cashoutElem2">10.00</span>
+                                            <span class="wager-currency">GHS</span>
+                                        </label>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stakes-section">
+                    <div class="stakes-block">
+                        <div class="control-type-block">
+                            <div class="control-type active">All Bets</div>
+                            <div class="control-type">My Bets</div>
+                            <div class="control-type">Top</div>
+                        </div>
+                        <div class="stakes">
+                            <div class="stakes-header">
+                                <div class="total-stakes">
+                                    <div>ALL BETS</div>
+                                    <div>6805</div>
+                                </div>
+                                <div class="previous-hand">
+                                    <img src="assets/history.svg">
+                                    <span>Previous hand</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="flyAway()">Stop and Exit</button>
+
+        <audio src="assets/sounds.mp3" id="sounds1"></audio>
+        <audio src="assets/sounds.mp3" id="sounds2"></audio>
+        <audio src="assets/sounds.mp3" id="sounds3"></audio>
+        <audio src="assets/sounds.mp3" id="sounds4"></audio>
+
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+        <script src="app.js"></script>
+        <script src="script.js?172"></script>
+        <script src="logic.js?125"></script>
+        <script src="sequence.js?1215"></script>
+
+    </body>
+</html>
