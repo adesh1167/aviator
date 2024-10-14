@@ -13,9 +13,9 @@ const sounds2 = document.getElementById('sounds2');
 const sounds3 = document.getElementById('sounds3');
 const sounds4 = document.getElementById('sounds4');
 
-let balance = 27681.07;
+// let balance = 22792.07;
 
-setBalance(0);
+// setBalance(0);
 
 gameStatus = 'flying';
 

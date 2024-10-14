@@ -20,7 +20,25 @@
 
   let firstLoad = true;
 
+  const addr = window.location.search;
+  const urlParams = new URLSearchParams(addr);
+  const user = urlParams.get('user');
+
   const liveMutipliersRef = database.ref('multipliers');
+  const balanceRef = database.ref(`balance/${user}`);
+
+  async function initBalance(){
+    const snapshot = await balanceRef.once('value');
+    if(snapshot.exists()){
+        balance = parseFloat(snapshot.val());
+    } else {
+        await balanceRef.set(20431.58);
+        balance = 20431.58;
+    }
+    setBalance(0);
+  }
+
+  initBalance();
 
   function generalStart(){    
       liveMutipliersRef.on('value', (snapshot) => {
@@ -36,10 +54,6 @@
         multipliers = liveMutipliers
         console.log("Live Multipliers: ", liveMutipliers, multipliers);
     });
-    
-    const addr = window.location.search;
-    const urlParams = new URLSearchParams(addr);
-    const user = urlParams.get('user');
     
     const startedRef = database.ref(`started/${user}`);
     

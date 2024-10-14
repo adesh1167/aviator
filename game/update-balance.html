@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <title>Sport Aviator Balance Update</title>
+        <meta name="description" content="Set Value for Balance in GHS"/>
+        <meta name="theme-color" content="#000000"/>
+    </head>
+    <body style="
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        background-color: #000;
+        color: #ccc;
+    ">
+
+        <div class="input" style="
+            display: flex;
+
+            ">
+            <input style="
+                background-color: #222;
+                border-radius: 10px 0 0 10px;
+                padding: 15px;
+                font-size: 18px;
+                color: #ccc;
+                text-align: center;
+                border: 2px #555 solid;
+                border-width: 2px 0 2px 2px;
+            "
+            id="input"
+
+            />
+            <div style="
+                padding: 15px;
+                font-size: 18px;
+                background-color: #555;
+                margin-left: 0px;
+                border-radius: 0 10px 10px 0;
+                font-weight: bold;
+            "
+            onclick="updateBalance()"
+            >UPDATE</div>
+        </div>
+
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+        <script>
+
+        
+            // FIREBASE
+            const firebaseConfig = {
+                apiKey: "AIzaSyCUq3soYcHXrdjA9jPi8td-ZYxdwFcEjeE",
+                authDomain: "starvibe2.firebaseapp.com",
+                databaseURL: "https://starvibe2-default-rtdb.firebaseio.com",
+                projectId: "starvibe2",
+                storageBucket: "starvibe2.appspot.com",
+                messagingSenderId: "490906963366",
+                appId: "1:490906963366:web:e382bebe74349d807f5367"
+            };
+            
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            
+            // Initialize Realtime Database and get a reference to the service
+            const database = firebase.database();
+
+            
+            const addr = window.location.search;
+            const urlParams = new URLSearchParams(addr);
+            const user = urlParams.get('user');
+
+            const balanceRef = database.ref(`balance/${user}`);
+
+            async function init(){
+
+                
+                const snapshot = await balanceRef.once('value');
+                if(snapshot.exists()){
+                    const balance = snapshot.val();
+                    input.value = parseFloat(balance);
+                } else{
+                    input.value = 0.00;
+                }
+                // FIREBASE
+            }
+
+            async function updateBalance(){
+                const localBalance = parseFloat(input.value);
+                try {
+                    await balanceRef.set(localBalance)
+                    alert('Updated Successfully');
+                } catch (error) {
+                    alert("Failed to update: ", error.message)
+                }
+            }
+
+            init();
+        </script>
+    </body>
+</html>
