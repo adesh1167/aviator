@@ -27,12 +27,12 @@
                     <div class="bar-fill" id="barFill"></div>
                 </div>
                 <div class="date-time">
-                    <div class="time" id="time">SportyBet</div>
+                    <div class="time" id="bookieElem">_</div>
                     <div class="divider">-</div>
                     <div class="date" id="date">Aviator</div>
                 </div>
                 <ul class="instructions">
-                    <li class="instruction">This tool is strictly for SportyBet Aviator Casino Game</li>
+                    <li class="instruction">This tool is strictly for <span id="countryElem">_</span> Aviator Casino Game</li>
                     <li class="instruction">Odds are accurate up to one decimal place</li>
                     <li class="instruction">To be on the safer side, use the auto section in the aviator game</li>
                     <li class="instruction">Do not play for more than 30 minutes in a row to avoid spooking the aviator security bots</li>
@@ -89,13 +89,17 @@
             const urlParams = new URLSearchParams(addr);
             const user = urlParams.get('user');
             const accessCode = urlParams.get('access-code');
+            const country = urlParams.get('country');
+            const bookie = urlParams.get('bookie');
 
             
             const inPlayRef = database.ref('inPlay');
 
             let playing = false;
 
-            if(accessCode){
+            if(accessCode && country && bookie){
+                bookieElem.innerHTML = bookie;
+                countryElem.innerHTML = `${country} ${bookie}`;
                 inPlayRef.on('value', (snapshot) => {
                     const data = snapshot.val();
                     if(data && !playing){
@@ -108,7 +112,8 @@
                     }
                 });
             }else{
-                loading.innerHTML = "INVALID ACCESS CODE";
+                if(!accessCode) loading.innerHTML = "INVALID ACCESS CODE";
+                else loading.innerHTML = "INVALID ACCESS CODE DATA";
             }
 
             function stop(){
