@@ -234,7 +234,7 @@
                         console.log(data);
                         if(data.status === "valid"){
                             message.innerHTML = data.message;
-                            window.location.href = `predictor/index.html?access-code=${accessCode}`;
+                            window.location.href = `predictor/index.html?access-code=${accessCode}&country=${data.data.country}&bookie=${data.data.bookie}`;
                         } else{
                             message.innerHTML = data.error
                         }
