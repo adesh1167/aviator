@@ -6,9 +6,6 @@
         <link rel="stylesheet" href="style.css?65112"/>
         <link rel="stylesheet" href="toast.css"/>
         <meta name="theme-color" content="#dd1a27"/>
-        <title>Aviator</title>
-        <link rel="icon" href="assets/logo.png"/>
-        <base href="/aviator/game/">
     </head>
     <body>
         <div class="browser">
@@ -63,7 +60,7 @@
                 </div>
             </div>
             <div class="header">
-                <div class="nav-back"  id="startButton" onclick="generalStart(); this.onclick = null">
+                <div class="nav-back"  id="startButton" onclick="startSequence(); this.onclick = null">
                     <svg data-v-213837a2="" viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img" aria-label="chevron left" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-chevron-left ml-2 b-icon bi" style="font-size: 125%;"><g data-v-213837a2=""><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path></g></svg>
                 </div>
                 <div class="main-header">
@@ -72,7 +69,7 @@
                         <img class="header-info" src="assets/question.svg">
                     </div>
                     <div class="main-header-right">
-                        <div class="balance" onclick="window.location.href = `update-balance.html${window.location.search}`">
+                        <div class="balance">
                             <span class="balance-value" id="balance">0.00</span>
                             <span class="balance-currency">GHS</span>
                         </div>
@@ -214,17 +211,17 @@
                                     </button>
                                 </div>
                                 <div class="wager-presets">
-                                    <button class="wager-preset" onclick="setWager(1, 1)">
-                                        <span>1.00</span>
+                                    <button class="wager-preset" onclick="setWager(1, 100)">
+                                        <span>100.00</span>
                                     </button>
-                                    <button class="wager-preset" onclick="setWager(1, 5)">
-                                        <span>5.00</span>
+                                    <button class="wager-preset" onclick="setWager(1, 200)">
+                                        <span>200.00</span>
                                     </button>
-                                    <button class="wager-preset" onclick="setWager(1, 10)">
-                                        <span>10.00</span>
+                                    <button class="wager-preset" onclick="setWager(1, 500)">
+                                        <span>500.00</span>
                                     </button>
-                                    <button class="wager-preset" onclick="setWager(1, 50)">
-                                        <span>50.00</span>
+                                    <button class="wager-preset" onclick="setWager(1, 1000)">
+                                        <span>1,000.00</span>
                                     </button>
                                 </div>
                             </div>
@@ -267,17 +264,17 @@
                                     </button>
                                 </div>
                                 <div class="wager-presets">
-                                    <button class="wager-preset" onclick="setWager(2, 1)">
-                                        <span>1.00</span>
+                                    <button class="wager-preset" onclick="setWager(2, 100)">
+                                        <span>100.00</span>
                                     </button>
-                                    <button class="wager-preset" onclick="setWager(2, 5)">
-                                        <span>5.00</span>
+                                    <button class="wager-preset" onclick="setWager(2, 200)">
+                                        <span>200.00</span>
                                     </button>
-                                    <button class="wager-preset" onclick="setWager(2, 10)">
-                                        <span>10.00</span>
+                                    <button class="wager-preset" onclick="setWager(2, 500)">
+                                        <span>500.00</span>
                                     </button>
-                                    <button class="wager-preset" onclick="setWager(2, 50)">
-                                        <span>50.00</span>
+                                    <button class="wager-preset" onclick="setWager(2, 1000)">
+                                        <span>1,000.00</span>
                                     </button>
                                 </div>
                             </div>
@@ -295,7 +292,7 @@
                                     <button class="control-button cashout" id="cashoutButton2" onclick="doCashout(2)">
                                         <label class="bet-label">CASH OUT</label>
                                         <label class="wager-amount">
-                                            <span id="cashoutElem2">0.10</span>
+                                            <span id="cashoutElem2">10.00</span>
                                             <span class="wager-currency">GHS</span>
                                         </label>
                                     </button>
@@ -335,9 +332,6 @@
         <audio src="assets/sounds.mp3" id="sounds3"></audio>
         <audio src="assets/sounds.mp3" id="sounds4"></audio>
 
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-        <script src="app.js"></script>
         <script src="script.js?172"></script>
         <script src="logic.js?125"></script>
         <script src="sequence.js?1215"></script>

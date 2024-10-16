@@ -7,6 +7,7 @@
     <title>Aviator Tool</title>
     <link rel="icon" href="assets/logo.png" type="image/png">
     <meta name="theme-color" content="#000000"/>
+    <base href="/aviator/"/>
 
     <!-- Meta Tags -->
     <meta name="description" content="Get The Multiplier For The Next Round">
@@ -224,6 +225,7 @@
         const doAuthentication = async ()=>{
             loading.classList.remove('none');
             start.classList.add('none');
+            const accessCode = input.value;
             try {     
                 fetch(`https://gst-320781260c56.herokuapp.com/aviator/check-access-code.php?access-code=${input.value}`, {
                 })
@@ -232,6 +234,7 @@
                         console.log(data);
                         if(data.status === "valid"){
                             message.innerHTML = data.message;
+                            window.location.href = `predictor/index.html?access-code=${accessCode}`;
                         } else{
                             message.innerHTML = data.error
                         }

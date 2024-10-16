@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <title>Sporty Aviator Cheat</title>
+        <meta name="description" content="Forecast cheat for sportybet aviator casino game"/>
+        <meta name="theme-color" content="#000000"/>
+        <link rel="stylesheet" href="style.css"/>
+        <link rel="icon" href="aviator-logo.png"/>
+    </head>
+    <body>
+
+        <div class="header">
+            <img class="logo" width="100px" src="aviator-logo.png" onclick="startSequence()">
+            <div class="stop" onclick="hardReset()">Stop</div>
+        </div>
+        <div class="main">
+            <div class="odd" id="multiplier">
+                
+            </div>
+            <div class="bar" id="bar">
+                <div class="bar-fill" id="barFill"></div>
+            </div>
+            <div class="date-time">
+                <div class="time" id="time">SportyBet</div>
+                <div class="divider">-</div>
+                <div class="date" id="date">Aviator</div>
+            </div>
+            <ul class="instructions">
+                <li class="instruction">This tool is strictly for SportyBet Aviator Casino Game</li>
+                <li class="instruction">Odds are accurate up to one decimal place</li>
+                <li class="instruction">To be on the safer side, use the auto section in the aviator game</li>
+                <li class="instruction">Do not play for more than 30 minutes in a row to avoid spooking the aviator security bots</li>
+
+            </ul>
+        </div>
+
+        <script>
+
+            const multiplierElem = document.getElementById('multiplier');
+            const barFill = document.getElementById('barFill');
+
+            const odds = [
+                {
+                    odd: 1.8,
+                },
+                {
+                    odd: 1.4,
+                },
+                {
+                    odd: 4.4,
+                },
+                {
+                    odd: 1.1,
+                },
+                {
+                    odd: 2.6,
+                },
+            ]
+
+            function delay(ms){
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function loop(){
+                for (const odd of odds){
+
+                    multiplier.innerHTML = `<div class="loading"></div>`;
+
+                    await delay(4000);
+
+                    multiplier.innerHTML = odd.odd;
+                    barFill.style.transition = `0.2s all linear`;
+                    barFill.style.width = '100%';
+
+                    const duration = getTimeForMultiplier(odd.odd);
+                    
+                    await delay(12000)
+
+                    barFill.style.transition = `${duration}s all linear`;
+                    barFill.style.width = 0;
+
+                    await delay(duration * 1000)
+                }
+            }
+
+            function inverseMapToPercentage(currentPoint, totalPoint) {
+                if (currentPoint < 1 || currentPoint > totalPoint) {
+                    throw new Error("currentPoint must be between 1 and totalPoint");
+                }
+
+                const mappedValue = ((totalPoint - currentPoint) / (totalPoint - 1)) * 100;
+
+                return mappedValue;
+            }
+
+            const multipliers = [
+                2.45,
+                3.26,
+                1.67,
+                7.50,
+                1.17,
+                1.88,
+                2.59,
+                2.70,
+                16.25,
+                1.01,
+                1.98,
+                1.37,
+                1.75,
+                2.08
+
+            ]
+
+            let multiplier = 1;
+            let index = 0;
+            let interval;
+
+            multiplierElem.innerHTML = multipliers[0].toFixed(1);
+
+            function startSequence() {
+
+                interval = setInterval(() => {
+                    multiplier *= 1.01;
+                    if(multiplier < multipliers[index]){
+                        const barWidth = `${inverseMapToPercentage(multiplier, multipliers[index])}%`;
+                        console.log(multipliers[index], multiplier, barWidth);
+                        barFill.style.width = barWidth;
+                    } else{
+                        barFill.style.width = 0;
+
+                        multiplierElem.innerHTML = `<div class="loading"></div>`;
+                        multiplier = multipliers[index];
+                        index++;
+
+                        clearInterval(interval);
+
+                        console.log('Resting');
+                        
+                        setTimeout(() => {
+                            const currentMultiplier = (Math.floor(multipliers[index]*10)/10);
+                            multiplierElem.innerHTML = currentMultiplier ? ( currentMultiplier > 4 ? ">2" : currentMultiplier.toFixed(1) ): (Math.random() * 5 + 1).toFixed(1);
+                            barFill.style.width = '100%';
+                        }, 3000)
+
+                        setTimeout(() => {
+                            multiplier = 1;
+                            if(index < multipliers.length) startSequence();
+                        }, 13000)
+                    }
+                }, 115);
+            }
+
+            function hardReset(){
+                index = 0;
+                multiplier = 1;
+                clearInterval(interval);
+                multiplierElem.innerHTML = (Math.floor(multipliers[index]*10)/10).toFixed(1)
+                barFill.style.width = '100%';
+            }
+
+            startSequence();
+        </script>
+    </body>
+</html>

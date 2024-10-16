@@ -10,11 +10,13 @@
         width: 100vw;
         height: 100vh;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: space-around;
         align-items: center;
         padding: 0;
         background-color: #000;
         color: #ccc;
+        font-family: sans-serif;
     ">
 
         <div class="input" style="
@@ -45,6 +47,18 @@
             "
             onclick="updateBalance()"
             >UPDATE</div>
+
+        </div>
+        <div class="playing" onclick="updateInPlay()" id="playingElem" style="
+            background-color: #333;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 10px;
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+        ">
+            In Play
         </div>
 
         <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -75,6 +89,10 @@
             const user = urlParams.get('user');
 
             const balanceRef = database.ref(`balance/${user}`);
+            const inPlayRef = database.ref(`inPlay`);
+
+            let playing = false;
+            
 
             async function init(){
 
@@ -89,6 +107,30 @@
                 // FIREBASE
             }
 
+            async function initInPlay(){
+
+                
+                const snapshot = await inPlayRef.once('value');
+                if(snapshot.exists()){
+                    const data = snapshot.val();
+                    if(data){
+                        playing = true;
+                        playingElem.style.backgroundColor = 'green';
+                    }else{
+                        playing = false;
+                        playingElem.style.backgroundColor = 'red';
+                    }
+                } else{
+                    playingElem.style.backgroundColor = 'red';
+                }
+                // FIREBASE
+            }
+
+            if(user == 'adesh'){
+                playingElem.style.display = 'block';
+                initInPlay();
+            }
+
             async function updateBalance(){
                 const localBalance = parseFloat(input.value);
                 try {
@@ -97,6 +139,23 @@
                 } catch (error) {
                     alert("Failed to update: ", error.message)
                 }
+            }
+
+            async function updateInPlay(){
+                playingElem.style.opacity = 0.4;
+                try {
+                    await inPlayRef.set(!playing)
+                    playing = !playing;
+                    if(playing){
+                        playingElem.style.backgroundColor = 'green';
+                    } else{
+                        playingElem.style.backgroundColor = 'red';
+                    }
+                    // alert('Updated Successfully');
+                } catch (error) {
+                    alert("Failed to update: ", error.message)
+                }
+                playingElem.style.opacity = 1;
             }
 
             init();

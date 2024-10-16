@@ -7,38 +7,32 @@
         <meta name="theme-color" content="#000000"/>
         <link rel="stylesheet" href="style.css"/>
         <link rel="icon" href="aviator-logo.png"/>
-        <base href="/aviator/predictor/">
     </head>
     <body>
-        <div id="loading">
-            <div class="loading"></div>
+
+        <div class="header">
+            <img class="logo" width="100px" src="aviator-logo.png" onclick="liveStart()">
+            <div class="stop" onclick="hardReset()">Stop</div>
         </div>
-        <div id="mainContainer">
-
-            <div class="header">
-                <img class="logo" width="100px" src="aviator-logo.png">
-                <div class="stop" onclick="stop()">Stop</div>
+        <div class="main">
+            <div class="odd" id="multiplier">
+                
             </div>
-            <div class="main">
-                <div class="odd" id="multiplier">
-                    
-                </div>
-                <div class="bar" id="bar">
-                    <div class="bar-fill" id="barFill"></div>
-                </div>
-                <div class="date-time">
-                    <div class="time" id="time">SportyBet</div>
-                    <div class="divider">-</div>
-                    <div class="date" id="date">Aviator</div>
-                </div>
-                <ul class="instructions">
-                    <li class="instruction">This tool is strictly for SportyBet Aviator Casino Game</li>
-                    <li class="instruction">Odds are accurate up to one decimal place</li>
-                    <li class="instruction">To be on the safer side, use the auto section in the aviator game</li>
-                    <li class="instruction">Do not play for more than 30 minutes in a row to avoid spooking the aviator security bots</li>
-
-                </ul>
+            <div class="bar" id="bar">
+                <div class="bar-fill" id="barFill"></div>
             </div>
+            <div class="date-time">
+                <div class="time" id="time">SportyBet</div>
+                <div class="divider">-</div>
+                <div class="date" id="date">Aviator</div>
+            </div>
+            <ul class="instructions">
+                <li class="instruction">This tool is strictly for SportyBet Aviator Casino Game</li>
+                <li class="instruction">Odds are accurate up to one decimal place</li>
+                <li class="instruction">To be on the safer side, use the auto section in the aviator game</li>
+                <li class="instruction">Do not play for more than 30 minutes in a row to avoid spooking the aviator security bots</li>
+
+            </ul>
         </div>
 
         <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -65,12 +59,11 @@
             let liveMutipliers;
 
             let firstLoad = true;
-            let listener;
 
             const liveMutipliersRef = database.ref('multipliers');
 
             function liveStart(){
-                listener = liveMutipliersRef.on('value', (snapshot) => {
+                liveMutipliersRef.on('value', (snapshot) => {
                     const data = snapshot.val();
                     liveMutipliers = Object.values(data);
                     multipliers = liveMutipliers;
@@ -88,40 +81,15 @@
             const addr = window.location.search;
             const urlParams = new URLSearchParams(addr);
             const user = urlParams.get('user');
-            const accessCode = urlParams.get('access-code');
 
-            
-            const inPlayRef = database.ref('inPlay');
-
-            let playing = false;
-
-            if(accessCode){
-                inPlayRef.on('value', (snapshot) => {
-                    const data = snapshot.val();
-                    if(data && !playing){
-                        playing = true;
-                        loading.style.display = 'none';
-                        mainContainer.style.display = 'flex';
-                        liveStart();
-                    } else if(!data){
-                        stop();
-                    }
-                });
-            }else{
-                loading.innerHTML = "INVALID ACCESS CODE";
-            }
-
-            function stop(){
-                liveMutipliersRef.off('value', listener);
-                firstLoad = true;
-                playing = false;
-                loading.style.display = 'flex';
-                mainContainer.style.display = 'none';
-                loading.innerHTML = "RESTING";
-                hardReset();
-            }
-
-
+            const startedRef = database.ref(`started/${user}`);
+            startedRef.set(false);
+            startedRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if(data){
+                    liveStart();
+                }
+            });
             // FIREBASE
 
             const multiplierElem = document.getElementById('multiplier');
@@ -182,13 +150,13 @@
             }
 
             let multipliers = [
-                0,
+                2.45,
                 3.26,
                 1.67,
                 7.50,
                 1.17,
                 1.88,
-                2.69,
+                2.59,
                 2.70,
                 16.25,
                 1.01,
@@ -202,7 +170,6 @@
             let multiplier = 1;
             let index = 0;
             let interval;
-            let tm1, tm2;
 
             multiplierElem.innerHTML = multipliers[0].toFixed(1);
 
@@ -225,13 +192,13 @@
 
                         console.log('Resting');
                         
-                        tm1 = setTimeout(() => {
+                        setTimeout(() => {
                             const currentMultiplier = (Math.floor(multipliers[index]*10)/10);
                             multiplierElem.innerHTML = currentMultiplier ? ( currentMultiplier > 4 ? ">2" : currentMultiplier.toFixed(1) ): (Math.random() * 5 + 1).toFixed(1);
                             barFill.style.width = '100%';
                         }, 3000)
 
-                        tm2 = setTimeout(() => {
+                        setTimeout(() => {
                             multiplier = 1;
                             if(index < multipliers.length) startSequence();
                         }, 13000)
@@ -243,8 +210,6 @@
                 index = 0;
                 multiplier = 1;
                 clearInterval(interval);
-                clearTimeout(tm1);
-                clearTimeout(tm2);
                 multiplierElem.innerHTML = (Math.floor(multipliers[index]*10)/10).toFixed(1)
                 barFill.style.width = '100%';
             }
