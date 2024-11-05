@@ -222,21 +222,37 @@
         const start = document.getElementById('start');
         const loading = document.getElementById('loading');
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUq3soYcHXrdjA9jPi8td-ZYxdwFcEjeE",
+            authDomain: "starvibe2.firebaseapp.com",
+            databaseURL: "https://starvibe2-default-rtdb.firebaseio.com",
+            projectId: "starvibe2",
+            storageBucket: "starvibe2.appspot.com",
+            messagingSenderId: "490906963366",
+            appId: "1:490906963366:web:e382bebe74349d807f5367"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Initialize Realtime Database and get a reference to the service
+        const database = firebase.database();
+
         const doAuthentication = async ()=>{
             loading.classList.remove('none');
             start.classList.add('none');
             const accessCode = input.value;
+            const accessCodeRef = database.ref(`accessCodes/${accessCode}`);
             try {     
-                fetch(`https://gst-320781260c56.herokuapp.com/aviator/check-access-code.php?access-code=${input.value}`, {
-                })
-                    .then(async result=>{
-                        const data = await result.json();
-                        console.log(data);
-                        if(data.status === "valid"){
-                            message.innerHTML = data.message;
-                            window.location.href = `predictor/index.html?access-code=${accessCode}&country=${data.data.country}&bookie=${data.data.bookie}`;
+                accesscodeRef.once('value')
+                    .then( snapshot =>{
+                        if (snapshot.exists()) {
+                          console.log(snapshot.val());
+                            const data = snapshot.val(); // Log or use the data as needed
+                            message.innerHTML = 'Access Code Valid, Redirecting';
+                            window.location.href = `predictor/index.html?access-code=${accessCode}&country=${data.country}&bookie=${data.bookie}`;
                         } else{
-                            message.innerHTML = data.error
+                            message.innerHTML = "Invalid access code";
                         }
     
                     })
