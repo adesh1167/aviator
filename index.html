@@ -247,7 +247,7 @@
             const accessCode = input.value;
             const accessCodeRef = database.ref(`accessCodes/${accessCode}`);
             try {     
-                accesscodeRef.once('value')
+                accessCodeRef.once('value')
                     .then( snapshot =>{
                         if (snapshot.exists()) {
                           console.log(snapshot.val());
