@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <base href="/predictor/">
         <meta name="viewport" content="width=device-width"/>
         <title>Sporty Aviator Cheat</title>
         <meta name="description" content="Forecast cheat for sportybet aviator casino game"/>
         <meta name="theme-color" content="#000000"/>
         <link rel="stylesheet" href="style.css"/>
         <link rel="icon" href="aviator-logo.png"/>
+        <base href="/predictor/">
     </head>
     <body>
         <div id="loading">
             <div class="loading"></div>
         </div>
-        <div id="mainContainer" style="display: none">
+        <div id="mainContainer">
 
             <div class="header">
                 <img class="logo" width="100px" src="aviator-logo.png">
@@ -75,7 +75,7 @@
                     liveMutipliers = Object.values(data);
                     multipliers = liveMutipliers;
                     if(firstLoad){
-                        index = liveMutipliers.length - 4;
+                        // index = liveMutipliers.length - 4;
                         firstLoad = false;
                         const content = liveMutipliers[index].toFixed(1);
                         multiplierElem.innerHTML = content > 4 ? ">2" : content;
@@ -229,6 +229,11 @@
                         clearInterval(interval);
 
                         console.log('Resting');
+
+                        if(index >= multipliers.length){
+                            inPlayRef.set(false);
+                            return
+                        }
                         
                         tm1 = setTimeout(() => {
                             const currentMultiplier = (Math.floor(multipliers[index]*10)/10);
@@ -239,6 +244,9 @@
                         tm2 = setTimeout(() => {
                             multiplier = 1;
                             if(index < multipliers.length) startSequence();
+                            else{
+                                inPlayRef.set(false);
+                            }
                         }, 13000)
                     }
                 }, 115);
