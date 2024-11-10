@@ -81,7 +81,7 @@
                         multiplierElem.innerHTML = content > 4 ? ">2" : content;
                         startSequence();
                     }
-                    console.log("Live Multipliers: ", liveMutipliers);
+                    // console.log("Live Multipliers: ", liveMutipliers);
                 });
             }
 
@@ -217,7 +217,7 @@
                     multiplier *= 1.01;
                     if(multiplier < multipliers[index]){
                         const barWidth = `${inverseMapToPercentage(multiplier, multipliers[index])}%`;
-                        console.log(multipliers[index], multiplier, barWidth);
+                        // console.log(multipliers[index], multiplier, barWidth);
                         barFill.style.width = barWidth;
                     } else{
                         barFill.style.width = 0;
@@ -228,7 +228,7 @@
 
                         clearInterval(interval);
 
-                        console.log('Resting');
+                        // console.log('Resting');
 
                         if(index >= multipliers.length){
                             inPlayRef.set(false);
