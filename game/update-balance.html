@@ -49,16 +49,34 @@
             >UPDATE</div>
 
         </div>
-        <div class="playing" onclick="updateInPlay()" id="playingElem" style="
-            background-color: #333;
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 10px;
-            display: none;
-            font-size: 18px;
-            font-weight: bold;
+        <div class="buttons" style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         ">
-            In Play
+            <div class="playing" onclick="updateInPlay()" id="playingElem" style="
+                background-color: #333;
+                color: #fff;
+                padding: 10px 15px;
+                border-radius: 10px;
+                display: none;
+                font-size: 18px;
+                font-weight: bold;
+            ">
+                In Play
+            </div>
+            <div class="playing" onclick="updateMultipliers()" id="updateElem" style="
+                background-color: #333;
+                color: #fff;
+                padding: 10px 15px;
+                border-radius: 10px;
+                display: none;
+                font-size: 18px;
+                font-weight: bold;
+            ">
+                Update Multipliers
+            </div>
         </div>
 
         <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -90,6 +108,8 @@
 
             const balanceRef = database.ref(`balance/${user}`);
             const inPlayRef = database.ref(`inPlay`);
+            const liveMutipliersRef = database.ref('multipliers');
+
 
             let playing = false;
             
@@ -128,6 +148,7 @@
 
             if(user == 'adesh'){
                 playingElem.style.display = 'block';
+                updateElem.style.display = 'block';
                 initInPlay();
             }
 
@@ -156,6 +177,44 @@
                     alert("Failed to update: ", error.message)
                 }
                 playingElem.style.opacity = 1;
+            }
+
+            function prefillMultipliers(quantity){
+                const multis = [];
+                for(let i = 0; i < quantity; i++){
+                    const factor = Math.random() * 10;
+                    let value;
+                    if(factor < 3){
+                        multis.push( 1 + Math.random());
+                    } else if(factor < 6){
+                        multis.push( 2 + Math.random());
+                    } else if(factor < 8){
+                        multis.push( 3 + Math.random() * 4);
+                    } else{
+                        multis.push( 7 + Math.random() * 30);
+                    }
+                }
+
+                return multis;
+            }
+            async function updateMultipliers(){
+                console.log('Updating');
+                updateElem.style.opacity = 0.4;
+                const prevOnclick = updateElem.onclick;
+                updateElem.onclick = ()=>{};
+                try {
+                    const multis = prefillMultipliers(100);
+                    console.log(multis); 
+                    liveMutipliersRef.set({});
+                    for(multi of multis){
+                        value = parseFloat(multi.toFixed(2));
+                        await liveMutipliersRef.push(value);
+                    }
+                } catch (error) {
+                    console.log('Failed to update: ', error.message);
+                }
+                updateElem.onclick = prevOnclick;
+                updateElem.style.opacity = 1;
             }
 
             init();
