@@ -81,6 +81,7 @@
             const addr = window.location.search;
             const urlParams = new URLSearchParams(addr);
             const user = urlParams.get('user');
+            const autoStart = urlParams.get('autostart');
 
             const startedRef = database.ref(`started/${user}`);
             startedRef.set(false);
@@ -90,6 +91,13 @@
                     liveStart();
                 }
             });
+
+            if(autoStart == 'true'){
+                startedRef.set(true).then(()=>{
+
+                    liveStart();
+                });
+            }
             // FIREBASE
 
             const multiplierElem = document.getElementById('multiplier');
