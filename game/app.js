@@ -40,7 +40,20 @@
 
   initBalance();
 
+  const startedRef = database.ref(`started/${user}`);
+  startedRef.set(false);
+
+  let manualStarted = false;
+
+  startedRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if(data && !manualStarted){
+          generalStart();
+      }
+  })
+
   function generalStart(){    
+      manualStarted = true;
       liveMutipliersRef.on('value', (snapshot) => {
         const data = snapshot.val();
         liveMutipliers = Object.values(data);
@@ -55,7 +68,6 @@
         console.log("Live Multipliers: ", liveMutipliers, multipliers);
     });
     
-    const startedRef = database.ref(`started/${user}`);
     
     async function liveStart(){
         await startedRef.set(true);
