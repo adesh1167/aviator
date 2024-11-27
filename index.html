@@ -208,7 +208,7 @@
         <img src="assets/logo.png" alt="Aviator Tool Logo" class="logo">
         <div class="start">
             <span id="message"></span>
-            <input placeholder="Access Code" id="input"/>
+            <input placeholder="Access Code" id="input" name="access_code"/>
             <div class="button-section">
                 <button id="start" onclick="doAuthentication()">Start</button>
                 <div id="loading" class="loading none"></div>
@@ -246,6 +246,8 @@
             start.classList.add('none');
             const accessCode = input.value;
             const accessCodeRef = database.ref(`accessCodes/${accessCode}`);
+            message.innerHTML = "";
+            message.style.color = 'red';
             try {     
                 accessCodeRef.once('value')
                     .then( snapshot =>{
@@ -253,6 +255,7 @@
                           console.log(snapshot.val());
                             const data = snapshot.val(); // Log or use the data as needed
                             message.innerHTML = 'Access Code Valid, Redirecting';
+                            message.style.color = 'green';
                             window.location.href = `predictor/index.html?access-code=${accessCode}&country=${data.country}&bookie=${data.bookie}`;
                         } else{
                             message.innerHTML = "Invalid access code";
@@ -261,7 +264,7 @@
                     })
                     .catch(error=>{
                         message.innerHTML = 'Network Error. Try Again';
-                        // console.log(error)
+                        console.log(error)
                     })
                     .finally((result)=>{
                         console.log(result)
