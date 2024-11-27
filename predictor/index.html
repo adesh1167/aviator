@@ -85,6 +85,32 @@
                 });
             }
 
+            function generateMultipliers(quantity=40){
+                const multis = [];
+                for(let i = 0; i < quantity; i++){
+                    const factor = Math.random() * 10;
+                    let value;
+                    if(factor < 3){
+                        multis.push( 1 + Math.random());
+                    } else if(factor < 6){
+                        multis.push( 2 + Math.random());
+                    } else if(factor < 8){
+                        multis.push( 3 + Math.random() * 4);
+                    } else{
+                        multis.push( 7 + Math.random() * 30);
+                    }
+                }
+
+                multipliers = multis;
+
+                if(firstLoad){
+                    firstLoad = false;
+                    const content = multis[index].toFixed(1);
+                    multiplierElem.innerHTML = content > 4 ? ">2" : content;
+                    startSequence();
+                }
+            }
+
             const addr = window.location.search;
             const urlParams = new URLSearchParams(addr);
             const user = urlParams.get('user');
@@ -106,7 +132,7 @@
                         playing = true;
                         loading.style.display = 'none';
                         mainContainer.style.display = 'flex';
-                        liveStart();
+                        generateMultipliers();
                     } else if(!data){
                         stop();
                     }
