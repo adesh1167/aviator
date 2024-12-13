@@ -21,9 +21,9 @@ const sounds4 = document.getElementById('sounds4');
 
 const browserTabsLocal = localStorage.getItem('browserTabs');
 if(browserTabsLocal){
-    browserTabsDecoy.innerHTML = browserTabs.innerHTML = browserTabsLocal;
+    browserTabsDecoy.innerHTML = browserTabs.value = browserTabsLocal;
 } else{
-    browserTabsDecoy.innerHTML = browserTabs.innerHTML = 21;
+    browserTabsDecoy.innerHTML = browserTabs.value = 21;
 }
 
 browserTabs.addEventListener('input', ()=>{
