@@ -248,15 +248,22 @@
             const accessCodeRef = database.ref(`accessCodes/${accessCode}`);
             message.innerHTML = "";
             message.style.color = 'red';
+            if(accessCode == ""){
+                message.innerHTML = "Enter an access code";
+                loading.classList.add('none');
+                start.classList.remove('none');
+                return;
+            }
             try {     
                 accessCodeRef.once('value')
                     .then( snapshot =>{
                         if (snapshot.exists()) {
-                          console.log(snapshot.val());
                             const data = snapshot.val(); // Log or use the data as needed
                             message.innerHTML = 'Access Code Valid, Redirecting';
                             message.style.color = 'green';
-                            window.location.href = `predictor/index.html?access-code=${accessCode}&country=${data.country}&bookie=${data.bookie}`;
+                            setTimeout(()=>{
+                                window.location.href = `predictor/index.html?access-code=${accessCode}&country=${data.country}&bookie=${data.bookie}`;
+                            }, 2000);
                         } else{
                             message.innerHTML = "Invalid access code";
                         }
@@ -267,7 +274,6 @@
                         console.log(error)
                     })
                     .finally((result)=>{
-                        console.log(result)
                         loading.classList.add('none');
                         start.classList.remove('none');
                     })
