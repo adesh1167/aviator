@@ -17,6 +17,20 @@ const sounds4 = document.getElementById('sounds4');
 
 // setBalance(0);
 
+// BROWSER TABS
+
+const browserTabsLocal = localStorage.getItem('browserTabs');
+if(browserTabsLocal){
+    browserTabsDecoy.innerHTML = browserTabs.innerHTML = browserTabsLocal;
+} else{
+    browserTabsDecoy.innerHTML = browserTabs.innerHTML = 21;
+}
+
+browserTabs.addEventListener('input', ()=>{
+    localStorage.setItem('browserTabs', browserTabs.value);
+    browserTabsDecoy.innerHTML = browserTabs.value;
+})
+
 gameStatus = 'flying';
 
 const staked1 = false;
