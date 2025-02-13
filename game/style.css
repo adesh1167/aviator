@@ -369,17 +369,34 @@ canvas{
     /* z-index: 6; */
 }
 
-.next-round-loading{
+/* .next-round-loading{
     display: none;
+} */
+
+.next-round-loading {
+    display: none;
+    padding-right: 10px;
 }
 
-.next-round-loading img{
+/* Removed becuase of partner UFC */
+
+/* .next-round-loading img{
     width: 50px;
+    margin-bottom: 10px;
+} */
+
+.next-round-loading img {
+    width: 150px;
     margin-bottom: 10px;
 }
 
+.next-round-loading .official {
+    width: 110px;
+    margin-top: 8px;
+}
+
 .spin2{
-    animation: spin 1.5s linear infinite;
+    /* animation: spin 1.5s linear infinite;  */
 }
 
 .next-round-loading-text{
@@ -388,13 +405,21 @@ canvas{
     margin-bottom: 15px;
 }
 
-.next-round-loading-bar{
+/* .next-round-loading-bar{
     width: 110px;
     height: 4px;
     border-radius: 2px;
     overflow: hidden;
     background-color: #555;
     
+} */
+
+.next-round-loading-bar {
+    width: 210px;
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    background-color: #555;
 }
 
 .next-round-loading-bar-fill{
