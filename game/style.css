@@ -386,12 +386,12 @@ canvas{
 } */
 
 .next-round-loading img {
-    width: 150px;
+    width: 135px;
     margin-bottom: 10px;
 }
 
 .next-round-loading .official {
-    width: 110px;
+    width: 100px;
     margin-top: 8px;
 }
 
@@ -415,7 +415,7 @@ canvas{
 } */
 
 .next-round-loading-bar {
-    width: 210px;
+    width: 180px;
     height: 4px;
     border-radius: 2px;
     overflow: hidden;
