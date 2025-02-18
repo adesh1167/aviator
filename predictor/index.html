@@ -78,7 +78,7 @@
                         // index = liveMutipliers.length - 4;
                         firstLoad = false;
                         const content = liveMutipliers[index].toFixed(1);
-                        multiplierElem.innerHTML = content > 4 ? ">2" : content;
+                        multiplierElem.innerHTML = content > 50 ? ">2" : content;
                         startSequence();
                     }
                     // console.log("Live Multipliers: ", liveMutipliers);
@@ -106,7 +106,7 @@
                 if(firstLoad){
                     firstLoad = false;
                     const content = multis[index].toFixed(1);
-                    multiplierElem.innerHTML = content > 4 ? ">2" : content;
+                    multiplierElem.innerHTML = content > 50 ? ">2" : content;
                     startSequence();
                 }
             }
@@ -263,7 +263,7 @@
                         
                         tm1 = setTimeout(() => {
                             const currentMultiplier = (Math.floor(multipliers[index]*10)/10);
-                            multiplierElem.innerHTML = currentMultiplier ? ( currentMultiplier > 4 ? ">2" : currentMultiplier.toFixed(1) ): (Math.random() * 5 + 1).toFixed(1);
+                            multiplierElem.innerHTML = currentMultiplier ? ( currentMultiplier > 50 ? ">2" : currentMultiplier.toFixed(1) ): (Math.random() * 5 + 1).toFixed(1);
                             barFill.style.width = '100%';
                         }, 3000)
 
