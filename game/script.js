@@ -72,7 +72,10 @@ animateBlade();
 
 const rest = 400;
 
-const padding = 30;
+const padding = {
+    x: 20,
+    y: 7,
+};
 
 function customBezier(t, start = 0.1, middle = 1.5, end = 0.1) {
     // Control points: (0, 0), (0.5, 2), (1, 0)
@@ -142,20 +145,23 @@ function draw() {
 
 function drawSlackRope() {
 
+    const antiPaddingX = padding.x;
+    const antiPaddingY = 6;
+
     ctx.beginPath();
     
     // Move to point A (the fixed end of the rope)
-    ctx.moveTo(points.A.x , points.A.y );
+    ctx.moveTo(points.A.x - padding.x, points.A.y  + antiPaddingY );
     
     // Calculate the control point for the curve to simulate the sag
-    const controlPointX = (plane.x + points.A.x) * 0.55;
-    const controlPointY = Math.max(plane.y, points.A.y) + 0; // Sagging effect
+    const controlPointX = (plane.x + points.A.x - padding.x) * 0.55;
+    const controlPointY = Math.max(plane.y, points.A.y + antiPaddingY) + 0; // Sagging effect
 
     // Draw the quadratic Bézier curve between point A and the plane's current position
     ctx.quadraticCurveTo(controlPointX, controlPointY, plane.x, plane.y);
 
-    ctx.lineTo(plane.x , canvas.height - padding);
-    ctx.lineTo(points.A.x, canvas.height -padding);
+    ctx.lineTo(plane.x , canvas.height - padding.y + antiPaddingY);
+    ctx.lineTo(points.A.x - padding.x, canvas.height - padding.y + antiPaddingY);
     ctx.closePath(); // Close the path to create a filled shape
 
     ctx.fillStyle = 'rgba(250, 09, 57, 0.5)'; // Blue color with some transparency
@@ -166,7 +172,7 @@ function drawSlackRope() {
     ctx.strokeStyle = 'rgba(229, 9, 57, 255)';
     ctx.lineWidth = 4;
 
-    ctx.moveTo(points.A.x , points.A.y );
+    ctx.moveTo(points.A.x - padding.x , points.A.y + 4);
 
     // Draw the quadratic Bézier curve between point A and the plane's current position
     ctx.quadraticCurveTo(controlPointX, controlPointY, plane.x, plane.y);
@@ -185,8 +191,8 @@ const animate = setInterval(updateFrame, 16);
 points = {
     A: {
         name: 'A',
-        x: 0 + padding,
-        y: canvas.height - padding,
+        x: 0 + padding.x,
+        y: canvas.height - padding.y,
         curve: true,
         rest: 0,
         timingFunction: {start: 0.5}
@@ -219,10 +225,10 @@ points = {
 }
 
 const plane = {
-    baseX: 0 + padding,
-    baseY: 0 + canvas.height - padding,
-    x: 0 + padding,
-    y: canvas.height - padding,
+    baseX: 0 + padding.x,
+    baseY: 0 + canvas.height - padding.y,
+    x: 0 + padding.x,
+    y: canvas.height - padding.y,
     lastTarget: points.A,
     target: points.B,
     speed: 16,
@@ -347,10 +353,10 @@ function flyAway(){
 }
 
 function resetPlane(){
-    plane.x = 0 + padding;
-    plane.y = canvas.height - padding;
-    plane.baseX = 0 + padding;
-    plane.baseY = canvas.height - padding;
+    plane.x = 0 + padding.x;
+    plane.y = canvas.height - padding.y;
+    plane.baseX = 0 + padding.x;
+    plane.baseY = canvas.height - padding.y;
     plane.lastTarget = points.A;
     plane.target = points.B;
     plane.gone = false;
