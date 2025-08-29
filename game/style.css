@@ -69,6 +69,22 @@ body{
     color: #fff;
 }
 
+.nav-icon{
+    height: 14px;
+}
+
+.nav-logo{
+    width: 80px;
+    height: 20px;
+    margin-left: 4px;
+}
+
+.divider{
+    border-left: 1px #aaa solid;
+    height: 30px;
+    margin: 0 5px;
+}
+
 .main-header{
     height: 38px;
     background-color: #1b1c1d;
@@ -107,43 +123,43 @@ body{
 .menu{
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    border-left: 1px solid #464648;
+    padding: 0 4px;
+    /* border-left: 1px solid #464648; */
     height: 100%;
 }
 
 .menu img{
-    width: 18px;
+    width: 24px;
     height: auto;
 }
 
 .chat{
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    border-left: 1px solid #464648;
+    padding: 0 4px;
+    /* border-left: 1px solid #464648; */
     height: 100%;
 }
 
 .chat img{
-    width: 18px;
+    width: 24px;
     height: auto;
 }
 
 .balance{
     padding: 0 10px;
     line-height: 14px;
+    font-size: 14px;
 }
 
 .balance-value{
-    font-size: 16px;
     color: #28a909;
     font-weight: 700;
 }
 
 .balance-currency{
     color: #9b9c9e;
-    font-size: 12px;
+    /* font-size: 12px; */
 }
 
 .container{
@@ -191,7 +207,7 @@ body{
 
 .expand-multiplier-histories{
     background: linear-gradient(to right, #1110, #111 40%);
-    width: 80px;
+    width: 45px;
     height: 100%;
     /* border: 2px red solid; */
     position: absolute;
@@ -207,8 +223,8 @@ body{
     justify-content: space-around;
     align-items: center;
     background-color: #333;
-    width: 46px;
-    height: 22px;
+    width: 24px;
+    height: 16px;
     border-radius: 13px;
     border: solid 1px #414148;
     padding: 0 2px;
@@ -265,7 +281,7 @@ canvas{
     top: 0;
     left: 0;
     z-index: +1;
-    display: none;
+    display: none !important;
 }
 
 .vertical-pillar{
@@ -456,14 +472,21 @@ canvas{
     animation: spin 35s linear infinite;
 }
 
+.stakers{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+
+}
+
 .controls-section{
     /* display: none; */
 }
 
 .controls-block, .stakes-block{
     background-color: #1b1c1d;
-    margin-bottom: 5px;
-    border-radius: 10px;
+    margin-bottom: 2px;
+    border-radius: 20px;
     height: 150px;
     /* padding: 10px; */
     display: flex;
@@ -477,41 +500,42 @@ canvas{
 
 .control-type-block{
     display: flex;
-    border-radius: 12px;
+    border-radius: 64px;
     background-color: #141516;
-    margin-top: 10px;
+    margin-top: 20px;
+    padding: 4px;
     /* margin-bottom: auto; */
 }
 
 .control-type{
-    padding: 3px 5px;
-    font-size: 14px;
+    padding: 4px 5px 5px 4px;
+    font-size: 12px;
     color: #aaa;
     width: 100px;
     text-align: center;
-    border-radius: 12px;
+    border-radius: 32px;
 }
 
 .control-type.active{
-    color: #fff;
+    color: #ccc;
     background-color: rgb(44, 45, 48);
 }
 
 .buttons-block{
-    padding: 20px 0 15px 0;
+    padding: 10px 0 15px 0;
     display: flex;
     width: calc(100% - 20px);
 }
 
 .input-block{
     width: 140px;
-    margin-right: 5px;
+    margin-right: 7px;
 }
 
 .input-wrapper{
     display: flex;
     align-items: center;
-    background-color: #000;
+    background-color: #141516;
     padding: 6px 8px;
     border-radius: 20px;
     height: 34px;
@@ -528,7 +552,7 @@ canvas{
 .input-wrapper input{
     background-color: #9990;
     padding: 0;
-    color: #fff;
+    color: #ccc;
     font-size: 18px;
     font-weight: 900;
     width: 100%;
@@ -550,10 +574,10 @@ canvas{
 .wager-preset{
     background-color: #141516;
     border-radius: 10px;
-    padding: 2px 4px;
+    padding: 4px 4px;
     color: #83878e;
     font-weight: 600;
-    height: 18px;
+    height: 22px;
     font-size: 14px;
     width: 64px;
     margin-top: 4px;
@@ -596,6 +620,7 @@ canvas{
     color: #fff;
     font-size: 20px;
     position: absolute;
+    font-weight: 500;
 }
 
 .control-button.cancel{
@@ -615,7 +640,7 @@ canvas{
 }
 
 .wager-amount{
-    font-size: 24px;
+    font-size: 22px;
 }
 
 .wager-currency{
