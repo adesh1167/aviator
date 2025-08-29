@@ -1,6 +1,6 @@
 // Your web app's Firebase configuration
 // Replace the below config object with your own Firebase project config
-  const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyCUq3soYcHXrdjA9jPi8td-ZYxdwFcEjeE",
     authDomain: "starvibe2.firebaseapp.com",
     databaseURL: "https://starvibe2-default-rtdb.firebaseio.com",
@@ -8,72 +8,104 @@
     storageBucket: "starvibe2.appspot.com",
     messagingSenderId: "490906963366",
     appId: "1:490906963366:web:e382bebe74349d807f5367"
-  };
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  
-  // Initialize Realtime Database and get a reference to the service
-  const database = firebase.database();
+};
 
-  let liveMutipliers;
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-  let firstLoad = true;
+// Initialize Realtime Database and get a reference to the service
+const database = firebase.database();
 
-  const addr = window.location.search;
-  const urlParams = new URLSearchParams(addr);
-  const user = urlParams.get('user');
+let liveMutipliers;
+let stakers;
 
-  const liveMutipliersRef = database.ref('multipliers');
-  const balanceRef = database.ref(`balance/${user}`);
+let firstLoad = true;
 
-  async function initBalance(){
+const addr = window.location.search;
+const urlParams = new URLSearchParams(addr);
+const user = urlParams.get('user');
+
+const liveMutipliersRef = database.ref('multipliers');
+const balanceRef = database.ref(`balance/${user}`);
+const stakersRef = database.ref(`stakers`);
+
+async function initBalance() {
     const snapshot = await balanceRef.once('value');
-    if(snapshot.exists()){
+    if (snapshot.exists()) {
         balance = parseFloat(snapshot.val());
     } else {
         await balanceRef.set(20431.58);
         balance = 20431.58;
     }
     setBalance(0);
-  }
+}
 
-  initBalance();
+initBalance();
 
-  const startedRef = database.ref(`started/${user}`);
-  startedRef.set(false);
+const startedRef = database.ref(`started/${user}`);
+startedRef.set(false);
 
-  let manualStarted = false;
+let manualStarted = false;
 
-  startedRef.on('value', (snapshot) => {
-      const data = snapshot.val();
-      if(data && !manualStarted){
-          generalStart();
-      }
-  })
-
-  function generalStart(){    
-      manualStarted = true;
-      liveMutipliersRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        liveMutipliers = Object.values(data);
-        if(firstLoad){
-            for(const multiplier of [...liveMutipliers].slice(0, liveMutipliers.length - 4)){
-                prependMultiplier(false, multiplier)
-            }
-            index = liveMutipliers.length - 4;
-            firstLoad = false;
+startedRef.on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (data && !manualStarted) {
+        
+        console.log("Started: ", data);
+        manualStarted = true;
+        for (const multiplier of [...liveMutipliers].slice(0, liveMutipliers.length - 4)) {
+            prependMultiplier(false, multiplier)
         }
-        multipliers = liveMutipliers
-        console.log("Live Multipliers: ", liveMutipliers, multipliers);
-    });
-    
-    
-    async function liveStart(){
-        await startedRef.set(true);
+        index = liveMutipliers.length - 4;
         startSequence();
     }
-    
-    liveStart();
-  }
+})
+
+function initialize() {
+    // manualStarted = true;
+    liveMutipliersRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        const dataArray = Object.values(data);
+        liveMutipliers = dataArray.map((item) => item.multiplier);
+        // if (firstLoad) {
+        //     for (const multiplier of [...liveMutipliers].slice(0, liveMutipliers.length - 4)) {
+        //         prependMultiplier(false, multiplier)
+        //     }
+        //     index = liveMutipliers.length - 4;
+        //     firstLoad = false;
+        // }
+        multipliers = liveMutipliers;
+        stakers = dataArray.map((item) => item.stakers);
+        console.log("Data: ", stakers, multipliers);
+        console.log("Live Multipliers: ", liveMutipliers, multipliers);
+    });
+
+    // stakersRef.on('value', (snapshot) => {
+    //     console.log("Stakers: ", snapshot.val())
+    //     const data = snapshot.val();
+    //     if (data && data !== "") {
+    //         stakersCont.innerHTML = data;
+    //     } else {
+    //         stakersCont.innerHTML = null;
+    //     }
+    // });
+
+
+    // async function liveStart() {
+    //     await startedRef.set(true);
+    //     startSequence();
+    // }
+
+    // liveStart();
+}
+
+initialize();
+
+async function liveStart() {
+    if(!liveMutipliers) return;
+    await startedRef.set(true);
+    // startSequence();
+}
+
+// liveStart();
 
