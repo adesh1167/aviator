@@ -510,7 +510,7 @@ canvas{
 .control-type{
     padding: 4px 5px 5px 4px;
     font-size: 12px;
-    color: #aaa;
+    color: #a3a3a3;
     width: 100px;
     text-align: center;
     border-radius: 32px;
@@ -536,7 +536,7 @@ canvas{
     display: flex;
     align-items: center;
     background-color: #141516;
-    padding: 6px 8px;
+    padding: 6px 4px;
     border-radius: 20px;
     height: 34px;
     width: 100%;
@@ -547,6 +547,13 @@ canvas{
     display: flex;
     align-items: center;
     padding: 0px;
+    background-color: #2c2d30;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .input-wrapper input{
