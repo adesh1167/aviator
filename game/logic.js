@@ -82,7 +82,7 @@ const blocks = {
     },
     2: {
         staked : false,
-        wagerValue: 0.1,
+        wagerValue: 2,
         input: input2,
         wager: wager2,
         controlsBlock: controlsBlock2,
@@ -281,7 +281,7 @@ function showWagerButton(block, delay = 0){
 function showCashoutButton(block){
     blocks[block].controlButtonStatus = 2;
     blocks[block].controlsBlock.style.opacity = 1;
-    blocks[block].controlsBlock.style.borderColor = '#f70';
+    // blocks[block].controlsBlock.style.borderColor = '#f70';
     blocks[block].cashoutButton.style.display = 'flex';
     blocks[block].wagerButton.style.display = 'none';
     blocks[block].cancelButton.style.display = 'none';
@@ -289,7 +289,7 @@ function showCashoutButton(block){
 
 function showCancelButton(block){
     blocks[block].controlButtonStatus = 1;
-    blocks[block].controlsBlock.style.borderColor = 'red';
+    // blocks[block].controlsBlock.style.borderColor = 'red';
     blocks[block].waitingLabel.style.display = 'block',
     blocks[block].cancelButton.style.display = 'flex';
     blocks[block].wagerButton.style.display = 'none';
