@@ -1,0 +1,39 @@
+.wrapper {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 8px;
+    bottom: 8px;
+    height: 32px;
+    border-radius: 16px;
+    padding: 4px;
+    background: #29292980;
+}
+
+.avatars {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.avatars .avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: solid 1px #28a90a;
+}
+
+.avatars .avatar:not(:first-child) {
+    margin-left: -8px;
+}
+
+.wrapper .player-count {
+    font-weight: 500;
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 4px;
+    font-feature-settings: lining-nums tabular-nums;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: #fff;
+}
