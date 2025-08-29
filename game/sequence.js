@@ -86,11 +86,13 @@ function startSequence() {
                 let foundBelow50 = false;
 
                 stakersArray = [];
+                let i = 0;
                 for (const temp of stakers[index]) {
                     const match = temp.match(/player-count">[\s]*([\d,]+)/);
                     const num = match ? parseInt(match[1].replace(/,/g, ""), 10) : NaN;
 
-                    if (!foundBelow50) {
+                    if (!foundBelow50 || i > 15) {
+                        i++;
                         console.log("Not found below 50: ", num);
                         if (num <= 50) {
                             foundBelow50 = true;
